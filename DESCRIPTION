@@ -1,0 +1,13 @@
+Package: linearinterpolator
+Type: Package
+Title: ... 
+Version: 0.0
+Date: 2014-20-12
+Author: Alex Schlemov, Anya Yaveyn, Svyatoslav Gryaznov (alphabetical order :)
+Maintainer: Anya Yaveyn <anya.yaveyn@yandex.ru>, Svyatoslav Gryaznov <nightuser@ya.ru>
+Depends: R (>= 3.0.3)
+SystemRequirements: C++11, cgal
+Description: It, you know, interpolates things...
+License: MIT
+NeedsCompilation: yes
+URL: https://github.com/eodus/tesselation
