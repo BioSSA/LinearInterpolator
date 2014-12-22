@@ -1,3 +1,0 @@
-useDynLib(interpolator, interpolate_d)
-
-export(linear.interpolate)
