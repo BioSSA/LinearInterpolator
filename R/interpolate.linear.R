@@ -1,4 +1,4 @@
-linear.interpolate <- function(x, points, values, fill_value = NA) {
+interpolate.linear <- function(x, points, values, fill_value = NA) {
   #stopifnot(load.python())
 
   x <- as.matrix(x)
@@ -25,7 +25,7 @@ linear.interpolate <- function(x, points, values, fill_value = NA) {
   storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- storage.mode(fill_value) <- "double"
   storage.mode(d) <- "integer"
 
-  res <- .Call(interpolate_d, d, points, values, x, fill_value)
+  res <- .Call(linear_interpolate_d, d, points, values, x, fill_value)
 
   #res <- lapply(res, function(x) if (is.null(x)) NA_real_ else as.double(x))
   #res <- unlist(res)
