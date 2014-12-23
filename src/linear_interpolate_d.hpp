@@ -23,10 +23,10 @@ typedef Delaunay::Vertex_handle   Vertex_handle;
 extern "C"
 {
   //vector<double>
-  SEXP linear_interpolate_d(SEXP dimentions, //unsigned
-                            SEXP points,     //vector<Point>
-                            SEXP values,     //vector<double>
-                            SEXP xi,         //vector<Point>
+  SEXP linear_interpolate_d(SEXP dimentions,  //unsigned
+                            SEXP points,      //vector<Point>
+                            SEXP values,      //vector<double>
+                            SEXP xi,          //vector<Point>
                             SEXP fill_value); //double
 }
 
@@ -36,13 +36,11 @@ extern "C"
               int * ipiv, double * b, int * ldb, int * info);
 }
 
-typedef std::vector<double> point_t;
-
 extern "C"
 {
-  point_t find_barycentric_coords(std::size_t size,
-                                  point_t const & point,
-                                  std::vector<point_t> const & simplex);
+  std::vector<double> find_barycentric_coords(std::size_t size,
+                                              Point const & point,
+                                              std::vector<Point> const & simplex);
 }
 
 extern "C"
