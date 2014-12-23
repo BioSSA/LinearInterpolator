@@ -1,6 +1,6 @@
 linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE) {
   #stopifnot(load.python())
- 
+
   x <- as.matrix(x)
   points <- as.matrix(points)
   values <- as.vector(values)
@@ -36,7 +36,7 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE) {
   storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- storage.mode(fill_value) <- storage.mode(scale) <- "double"
   storage.mode(d) <- "integer"
 
-  res <- .Call(linear_interpolate_d, d, points, values, x, fill_value, scale)
+  res <- .Call(linear_interpolate_d, d, points, values, x, fill_value)
 
   res <- lapply(res, function(x) if (is.null(x)) NA_real_ else as.double(x))
   res <- unlist(res)
@@ -45,4 +45,37 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE) {
   res[is.nan(res)] <- NA_real_
 
   res
+}
+
+make.toroidal <- function(points, values) {
+  d <- ncol(points)
+
+  shifts <- sapply(
+    1:d,
+    function(x) { max(points[, x]) - min(points[, x]) }
+  )
+  directions <- c(0, 1, -1)
+  all_shifts <- expand.grid(
+    lapply(
+      as.list(shifts),
+      function(shift) {
+        shift * directions
+      }
+    )
+  )
+
+  toroidal_points <- c()
+  for (i in 1:nrow(all_shifts)) {
+    shift <- unlist(all_shifts[i, ])
+    toroidal_points <- rbind(toroidal_points, sweep(points, d, shift))
+  }
+
+  toroidal_values <- rep(values, nrow(all_shifts))
+
+  list(points = toroidal_points, values = toroidal_values)
+}
+
+linear.interpolate.toroidal <- function(x, points, values, fill_value=NA, scale=FALSE) {
+  tor = make.toroidal(points, values)
+  linear.interpolate(x, tor$points, tor$values, fill_value, scale)
 }

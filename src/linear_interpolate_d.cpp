@@ -5,7 +5,9 @@
 #include <algorithm>
 #include <map>
 #include <numeric>
+#include <limits>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "sexp_scaled_point_iterator.hpp"
