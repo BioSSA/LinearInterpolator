@@ -6,10 +6,10 @@ test_that("Simple test 1", function() {
 
   points <- matrix(
     c(
-      c(0, 0),
-      c(0, 2),
-      c(2, 0),
-      c(0.5, 0.5)
+      0, 0,
+      0, 2,
+      2, 0,
+      0.5, 0.5
     ),
     ncol = d,
     byrow=TRUE
@@ -24,7 +24,7 @@ test_that("Simple test 1", function() {
 
   xi <- matrix(
     c(
-      c(0.3, 0.2)
+      0.3, 0.2
     ),
     ncol = d,
     byrow=TRUE
