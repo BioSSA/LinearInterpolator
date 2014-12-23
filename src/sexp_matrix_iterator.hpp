@@ -8,7 +8,7 @@
 extern "C"
 {
 
-class sexp_matrix_iterator
+class sexp_scaled_point_iterator
    : public std::iterator<std::input_iterator_tag, double>
 {
 
@@ -19,16 +19,16 @@ private:
 
 public:
 
-    sexp_matrix_iterator(const SEXP & val, size_t d)
+    sexp_scaled_point_iterator(const SEXP & val, size_t d)
         : vector(REAL(val))
     { }
 
-    sexp_matrix_iterator(const SEXP & val, size_t d, size_t begin_index)
+    sexp_scaled_point_iterator(const SEXP & val, size_t d, size_t begin_index)
         : vector(REAL(val) + begin_index)
         , dimention(d)
     { }
 
-    sexp_matrix_iterator (const sexp_matrix_iterator& x) = default;
+    sexp_scaled_point_iterator (const sexp_scaled_point_iterator& x) = default;
 
     double operator*() const
     {
@@ -40,25 +40,25 @@ public:
         return vector;
     }
 
-    sexp_matrix_iterator& operator++()
+    sexp_scaled_point_iterator& operator++()
     {
         vector += dimention;
         return *this;
     }
 
-    sexp_matrix_iterator operator++(int)
+    sexp_scaled_point_iterator operator++(int)
     {
-        sexp_matrix_iterator temp(*this);
+        sexp_scaled_point_iterator temp(*this);
         vector += dimention;
         return temp;
     }
 
-    friend bool operator==(sexp_matrix_iterator const & a, sexp_matrix_iterator const & b)
+    friend bool operator==(sexp_scaled_point_iterator const & a, sexp_scaled_point_iterator const & b)
     {
         return (a.vector == b.vector) && (a.dimention == b.dimention);
     }
 
-    friend bool operator!=(sexp_matrix_iterator const & a, sexp_matrix_iterator const & b)
+    friend bool operator!=(sexp_scaled_point_iterator const & a, sexp_scaled_point_iterator const & b)
     {
         return !(a == b);
     }
