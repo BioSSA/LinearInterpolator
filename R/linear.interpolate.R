@@ -25,10 +25,12 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE) {
     scale <- as.vector(scale)
   }
 
-  scale <- as.double(scale)
+  stopifnot(length(scale) == ncol(points))
+
   x <- as.double(x)
   points <- as.double(points)
   values <- as.double(values)
+  scale <- as.double(scale)
   if (!is.na(fill_value) & !is.nan(fill_value)) {
     fill_value <- as.double(fill_value)
   }
@@ -36,7 +38,7 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE) {
   storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- storage.mode(fill_value) <- storage.mode(scale) <- "double"
   storage.mode(d) <- "integer"
 
-  res <- .Call(linear_interpolate_d, d, points, values, x, fill_value)
+  res <- .Call(linear_interpolate_d, d, points, values, x, fill_value, scale)
 
   res <- lapply(res, function(x) if (is.null(x)) NA_real_ else as.double(x))
   res <- unlist(res)
