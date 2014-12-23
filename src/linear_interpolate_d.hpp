@@ -25,15 +25,15 @@ typedef Delaunay::Vertex_handle   Vertex_handle;
 extern "C"
 {
   //vector<double>
-  SEXP linear_interpolate_d(SEXP dimentions, //unsigned
-                            SEXP points,     //vector<Point>
-                            SEXP values,     //vector<double>
-                            SEXP xi,         //vector<Point>
+  SEXP linear_interpolate_d(SEXP dimentions,  //unsigned
+                            SEXP points,      //vector<Point>
+                            SEXP values,      //vector<double>
+                            SEXP xi,          //vector<Point>
                             SEXP fill_value); //double
 
   std::vector<double> find_barycentric_coords(std::size_t size,
-                                              point_t const & point,
-                                              std::vector<point_t> const & simplex);
+                                              Point const & point,
+                                              std::vector<Point> const & simplex);
 
   void make_toroidal(std::size_t size,
                      std::vector<Point> & points,
