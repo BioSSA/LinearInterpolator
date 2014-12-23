@@ -26,13 +26,13 @@ make.toroidal <- function(points, values) {
   list(points = toroidal_points, values = toroidal_values)
 }
 
-linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, toroidal=FALSE) {
+linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, circular=FALSE) {
 
   x <- as.matrix(x)
   points <- as.matrix(points)
   values <- as.vector(values)
   fill_value <- as.vector(fill_value)
-  toroidal <- as.logical(toroidal)
+  circular <- as.logical(circular)
 
   if (length(values) < nrow(points)) {
     values <- values + numeric(nrow(points))
@@ -40,6 +40,10 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, to
 
   stopifnot(length(values) == nrow(points))
   stopifnot(length(fill_value) == 1)
+  stopifnot(!is.na(points))
+  stopifnot(!is.nan(points))
+  stopifnot(!is.na(x))
+  stopifnot(!is.nan(x))
 
   d <- ncol(points)
 
@@ -51,12 +55,22 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, to
     }
   } else {
     scale <- as.vector(scale)
+    stopifnot(!is.na(scale))
+    stopifnot(!is.nan(scale))
   }
+  stopifnot(length(scale) == d)
 
-  stopifnot(length(scale) == ncol(points))
+  torus_enabled <- true
+  if (length(circular) == 1) {
+    if (cirrcular) {
+      circular <- rep(TRUE, d)      
+    } else {
+      torus_enabled <- false
+  }
+  stopifnot(length(circular) == d)
 
-  if (toroidal) {
-    tor = make.toroidal(points, values)
+  if (torus_enabled) {
+    tor = make.toroidal(points, values, circular)
     points <- tor$points
     values <- tor$values
   }
