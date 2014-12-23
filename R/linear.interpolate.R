@@ -70,16 +70,17 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, ci
   }
   stopifnot(length(scale) == d)
 
-  torus_enabled <- true
+  torus_enabled <- TRUE
   if (length(circular) == 1) {
-    if (cirrcular) {
+    if (circular) {
       circular <- rep(TRUE, d)      
     } else {
-      torus_enabled <- false
+      torus_enabled <- FALSE
+    }
   }
-  stopifnot(length(circular) == d)
 
   if (torus_enabled) {
+    stopifnot(length(circular) == d)
     tor = make.toroidal(points, values, circular)
     points <- tor$points
     values <- tor$values
