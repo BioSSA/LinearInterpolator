@@ -1,3 +1,5 @@
+## C++
+
 # Compiled Object files
 *.slo
 *.lo
@@ -26,3 +28,48 @@
 *.exe
 *.out
 *.app
+
+
+## R
+
+# History files
+.Rhistory
+.Rapp.history
+
+# Example code in package build process
+*-Ex.R
+
+# RStudio files
+.Rproj.user/
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+
+## R extension
+
+..RCheck/*
+
+
+## Sublime Text
+
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+# sftp configuration file
+sftp-config.json
+
+
+## Gedit
+
+*~
