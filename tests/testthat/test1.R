@@ -1,7 +1,7 @@
 #source(system.file("extdata", "common.test.methods.R", package = "Rssa"))
 context("First")
 
-test_that("Simpe test1", {
+test_that("Simpe test1", function() {
   d <- 2
 
   points <- c(
