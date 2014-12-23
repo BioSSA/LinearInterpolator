@@ -10,6 +10,6 @@ Suggests: testthat (>= 0.7)
 SystemRequirements: cgal
 NeedsCompilation: yes
 Description: It, you know, interpolates things...
-License: MIT
+License: file LICENSE
 URL: https://github.com/eodus/tesselation
 
