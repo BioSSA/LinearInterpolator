@@ -50,6 +50,7 @@ vignettes/*.pdf
 ## R extension
 
 *Rcheck*
+src/symbols.rds
 
 
 ## Sublime Text
