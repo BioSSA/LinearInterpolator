@@ -1,16 +1,26 @@
-make.toroidal <- function(points, values) {
+make.toroidal <- function(points, values, circular) {
   d <- ncol(points)
 
   shifts <- sapply(
     1:d,
-    function(x) { max(points[, x]) - min(points[, x]) }
+    function(x) {
+      if (circular[x]) {
+        max(points[, x]) - min(points[, x])
+      } else {
+        0
+      }
+    }
   )
   directions <- c(0, 1, -1)
   all_shifts <- expand.grid(
     lapply(
       as.list(shifts),
       function(shift) {
-        shift * directions
+        if (shift == 0) {
+          c(0)
+        } else {
+          shift * directions
+        }
       }
     )
   )
@@ -86,7 +96,7 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, ci
   storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- storage.mode(fill_value) <- storage.mode(scale) <- "double"
   storage.mode(d) <- "integer"
 
-  
+
 
   res <- .Call(linear_interpolate_d, d, points, values, x, fill_value, scale)
 
