@@ -14,6 +14,8 @@
 
 #include <R.h>
 #include <Rinternals.h>
+#include <R_ext/BLAS.h>
+#include <R_ext/Lapack.h>
 
 typedef CGAL::Cartesian_d<double> R;
 typedef CGAL::Delaunay_d<R>       Delaunay;
@@ -28,25 +30,11 @@ extern "C"
                             SEXP values,     //vector<double>
                             SEXP xi,         //vector<Point>
                             SEXP fill_value); //double
-}
 
-extern "C"
-{
-  void dgesv_(int * n, int * nrhs, double * a, int * lda,
-              int * ipiv, double * b, int * ldb, int * info);
-}
+  std::vector<double> find_barycentric_coords(std::size_t size,
+                                              point_t const & point,
+                                              std::vector<point_t> const & simplex);
 
-typedef std::vector<double> point_t;
-
-extern "C"
-{
-  point_t find_barycentric_coords(std::size_t size,
-                                  point_t const & point,
-                                  std::vector<point_t> const & simplex);
-}
-
-extern "C"
-{
   void make_toroidal(std::size_t size,
                      std::vector<Point> & points,
                      std::vector<double> & values);

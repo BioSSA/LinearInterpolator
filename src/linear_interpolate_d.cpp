@@ -11,9 +11,9 @@
 #include "sexp_matrix_iterator.hpp"
 
 
-point_t find_barycentric_coords(std::size_t size,
-                                Point const & point,
-                                std::vector<Point> const & simplex)
+std::vector<double> find_barycentric_coords(std::size_t size,
+                                            Point const & point,
+                                            std::vector<Point> const & simplex)
 {
   std::vector<double> a(size * size);
   for (size_t i = 0; i < size; ++i)
@@ -38,7 +38,7 @@ point_t find_barycentric_coords(std::size_t size,
 
   // solve a*x = b
   // result will be in b
-  dgesv_(&size_int, &b_size, &a[0], &size_int, &ipiv[0],
+  F77_NAME(dgesv)(&size_int, &b_size, &a[0], &size_int, &ipiv[0],
     &b[0], &size_int, &info);
 
   // calculate last coordinate
@@ -77,12 +77,11 @@ void make_toroidal(std::size_t size,
 }
 
 //vector<double>
-SEXP linear_interpolate_d(
-    SEXP dimentions,
-    SEXP points,
-    SEXP values,
-    SEXP xi,
-    SEXP fill_value)
+SEXP linear_interpolate_d(SEXP dimentions,
+                          SEXP points,
+                          SEXP values,
+                          SEXP xi,
+                          SEXP fill_value)
 {
   auto d = INTEGER(dimentions)[0];
 
