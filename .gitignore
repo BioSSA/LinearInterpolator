@@ -49,7 +49,7 @@ vignettes/*.pdf
 
 ## R extension
 
-..RCheck/*
+*Rcheck*
 
 
 ## Sublime Text
