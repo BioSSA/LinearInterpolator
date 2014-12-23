@@ -1,3 +1,4 @@
 useDynLib(LinearInterpolator, linear_interpolate_d)
 
 export(linear.interpolate)
+export(linear.interpolate.toroidal)
