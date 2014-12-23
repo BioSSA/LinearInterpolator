@@ -17,7 +17,7 @@ make.toroidal <- function(points, values, circular) {
       as.list(shifts),
       function(shift) {
         if (shift == 0) {
-          c(0)
+          0
         } else {
           shift * directions
         }
