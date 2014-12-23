@@ -10,7 +10,7 @@ This function makes the Delaunay triangulation and then returns new values recal
 }
 
 \usage{
-linear.interpolate(x, points, values, fill_value=NA, scale=FALSE, toroidal=FALSE)
+linear.interpolate(x, points, values, fill_value=NA, scale=FALSE, circular=FALSE)
 }
 
 \arguments{
@@ -18,8 +18,8 @@ linear.interpolate(x, points, values, fill_value=NA, scale=FALSE, toroidal=FALSE
   \item{points}{Initial points represented as matrix. Each row is a n-dimentional point. It's assumed that ncol(x) == ncol(points).}
   \item{values}{Vector. Values for each of initial points. It's assumed that lengt(values) == nrow(points).}
   \item{fill_value}{Optional. Value used to fill in for requested points outside of the convex hull or points with NA value in (at least) one point of it's simplex. If not provided, then the default is nan.}
-  \item{scale}{Optional. Either a logical value or a numeric vector of length equal to the number of columns of x. If FALSE, then nothing happens. If TRUE all points will be rescaled to unit cube before performing interpolation. If vector, they'll be rescaled with scale as coefficients. Vector's length schould be equal to dimention of points. This is useful if some of the input dimensions have incommensurable units and differ by many orders of magnitude.}  
-  \item{toroidal}{Optional. Logical value. Indicates whether data should be replicated in all directions in order to support torus topology.}
+  \item{scale}{Optional. Either a logical value or a numeric vector of length equal to the number of dimentions. If FALSE, then nothing happens. If TRUE all points will be rescaled to unit cube before performing interpolation. If vector, they'll be rescaled with scale as coefficients. Vector's length schould be equal to dimention of points. This is useful if some of the input dimensions have incommensurable units and differ by many orders of magnitude.}  
+  \item{circular}{Optional. Either a logical value or a numeric vector of length equal to the number of dimentions. Indicates in which directions data should be replicated in order to support torus topology.}
 }  
 
 \details{
