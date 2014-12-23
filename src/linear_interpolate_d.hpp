@@ -34,8 +34,4 @@ extern "C"
   std::vector<double> find_barycentric_coords(std::size_t size,
                                               Point const & point,
                                               std::vector<Point> const & simplex);
-
-  void make_toroidal(std::size_t size,
-                     std::vector<Point> & points,
-                     std::vector<double> & values);
 }

@@ -49,55 +49,6 @@ std::vector<double> find_barycentric_coords(std::size_t size,
   return b;
 }
 
-void make_toroidal(std::size_t size,
-                   std::vector<Point> & points,
-                   std::vector<double> & values)
-{
-  size_t old_length = points.size();
-  size_t length = std::pow(3, size) * old_length;
-
-  std::vector<std::tuple<double, double, double>> shifts(size);
-  for (size_t i = 0; i < size; ++i)
-  {
-    double amin = std::numeric_limits<double>::max();
-    double amax = std::numeric_limits<double>::min();
-    for (auto const & p : points)
-    {
-      amin = std::min(amin, *(p.cartesian_begin() + i));
-      amax = std::max(amax, *(p.cartesian_begin() + i));
-    }
-    shifts[i] = amax - amin;
-    double shift = amax - amin;
-    Rprintf("%lf\n", shift);
-  }
-
-  points.reserve(length);
-
-  return;
-
-  /*shifts = [
-      np.amax(points[:, i]) - np.amin(points[:, i])
-      for i in xrange(points.shape[1])
-  ]
-  directions = np.array([0, 1, -1])
-  all_shifts = itertools.product(*[
-      directions * shift for shift in shifts
-  ])*/
-
-  //toroidal = np.empty((0,) + points.shape[1:])
-  //for total_shift in all_shifts:
-  //    toroidal = np.append(toroidal, points + np.array(total_shift), axis=0)
-
-  values.resize(length);
-  for (size_t i = 1; i < values_size; ++i)
-  {
-    for (size_t j = 0; j < old_values_size; ++j)
-    {
-      values[i * old_values_size + j] = values[j];
-    }
-  }
-}
-
 //vector<double>
 SEXP linear_interpolate_d(SEXP dimentions,
                           SEXP points,
