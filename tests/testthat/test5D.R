@@ -5,13 +5,12 @@ test_that("Simple", {
   
   points <- matrix(
     c(
+      0, 0, 0, 0, 0,  
       0, 0, 0, 0, 1,
-      0, 0, 0, 2, 0,
-      0, 0, 3, 0, 0,
-      0, 4, 0, 0, 0,
-      5, 0, 0, 0, 0,
-      1, 0, 1, 0, 1,
-      0, 2, 0, 3, 0
+      0, 0, 0, 1, 0,
+      0, 0, 1, 0, 0,
+      0, 1, 0, 0, 0,
+      1, 0, 0, 0, 0
     ),
     ncol = d,
     byrow=TRUE
@@ -23,20 +22,18 @@ test_that("Simple", {
     3,
     4,
     5,
-    6,
-    7
-    
+    6
   )
   
   xi <- matrix(
     c(
-      .3, .7, 0, 0, .1,
-      1, 1, .5, 0, 3,
+      .1, .1, .1, .1, .1,
+      .2, .2, .2, .2, .1,
       .5, .5, .5, .5, .5
     ),
     ncol = d,
     byrow=TRUE
   )
   
-  expect_equal(linear.interpolate(xi, points, values), as.numeric(c(NA, NA, 3.296875)), tolerance = 1e-5)
+  expect_equal(linear.interpolate(xi, points, values), as.numeric(c(2.5, 3.9, NA)), tolerance = 1e-5)
 })
