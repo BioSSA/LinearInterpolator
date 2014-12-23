@@ -17,7 +17,7 @@ linear.interpolate(x, points, values, fill_value=NA)
 \arguments{
   \item{x}{New points represented as matrix. Each row is a n-dimentional point.}
   \item{points}{Initial points represented as matrix. Each row is a n-dimentional point. It's assumed that ncol(x) == ncol(points).}
-  \item{value}{Vector. Values for each of initial points. It's assumed that lengt(values) == nrow(points).}
+  \item{values}{Vector. Values for each of initial points. It's assumed that lengt(values) == nrow(points).}
   \item{fill_value}{Optional. Vector. Values for each of initial points. It's assumed that lengt(values) == nrow(points).}
 }  
 

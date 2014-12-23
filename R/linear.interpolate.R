@@ -1,5 +1,4 @@
 linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE) {
-  #stopifnot(load.python())
 
   x <- as.matrix(x)
   points <- as.matrix(points)
