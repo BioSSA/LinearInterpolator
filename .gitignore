@@ -51,7 +51,7 @@ vignettes/*.pdf
 
 *Rcheck*
 src/symbols.rds
-
+*..pdf*
 
 ## Sublime Text
 
