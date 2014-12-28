@@ -7,8 +7,6 @@
 #define DCGAL_USE_MPFR
 #endif
 
-#include <cstddef>
-
 #include <CGAL/Cartesian_d.h>
 #include <CGAL/Delaunay_d.h>
 
@@ -31,8 +29,4 @@ extern "C"
                             SEXP xi,            //vector<Point>
                             SEXP fill_value,    //double
                             SEXP scale_coeffs); //vector<double>
-
-  std::vector<double> find_barycentric_coords(std::size_t size,
-                                              Point const & point,
-                                              std::vector<Point> const & simplex);
 }

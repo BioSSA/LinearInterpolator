@@ -5,9 +5,6 @@
 #include <R.h>
 #include <Rinternals.h>
 
-extern "C"
-{
-
 class sexp_scaled_point_iterator
    : public std::iterator<std::input_iterator_tag, double>
 {
@@ -64,5 +61,3 @@ public:
         return !(a == b);
     }
 };
-
-} // extern "C";
