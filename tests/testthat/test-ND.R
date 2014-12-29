@@ -1,6 +1,6 @@
-context("5D")
+context("ND")
 
-test_that("Simple", {
+test_that("5 D", {
   d <- 5
   
   points <- matrix(
