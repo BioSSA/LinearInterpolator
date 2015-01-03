@@ -36,40 +36,38 @@ make.toroidal <- function(points, values, circular) {
   list(points = toroidal_points, values = toroidal_values)
 }
 
-linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, circular=FALSE) {
-
+linear.interpolate <- function(x, points, values,
+                               fill_value = NA_real_,
+                               scale = FALSE, circular = FALSE) {
   x <- as.matrix(x)
   points <- as.matrix(points)
   values <- as.vector(values)
-  fill_value <- as.vector(fill_value)
+  fill_value <- fill_value[[1]]
+
   circular <- as.logical(circular)
+
+  d <- ncol(points)
 
   if (length(values) < nrow(points)) {
     values <- values + numeric(nrow(points))
   }
 
   stopifnot(length(values) == nrow(points))
-  stopifnot(length(fill_value) == 1)
-  stopifnot(!is.na(points))
-  stopifnot(!is.nan(points))
-  stopifnot(!is.na(x))
-  stopifnot(!is.nan(x))
+  stopifnot(all(is.finite(points)))
+  stopifnot(all(is.finite(x))) # TODO Allow NAs in input values
 
-  d <- ncol(points)
+  scale <- rep(scale, d)[seq_len(d)]
 
   if (is.logical(scale)) {
-    if (scale) {
-      scale <- sapply(1:d, function(x) { 1. / (max(points[, x]) - min(points[, x]))  })
-    } else {
-      scale <- rep(1, d)
-    }
-  } else {
-    scale <- as.vector(scale)
-    stopifnot(!is.na(scale))
-    stopifnot(!is.nan(scale))
+    scale <- ifelse(scale,
+                    apply(points, 2, function(x) diff(range(x))),
+                    1)
   }
+
   stopifnot(length(scale) == d)
 
+  # TODO Allow to denote topology by period
+  # circular <- rep(circular, d)[seq_len(d)]
   torus_enabled <- TRUE
   if (length(circular) == 1) {
     if (circular) {
