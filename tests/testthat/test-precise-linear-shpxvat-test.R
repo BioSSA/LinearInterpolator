@@ -5,7 +5,7 @@ library(LinearInterpolator)
 get_linear <- function(d, rand = runif, args = list(min=1, max=100)) {
   const <- do.call(rand, c(args, n=1))
   coeffs <- do.call(rand, c(args, n=d))
-  
+
   function(x) {
     stopifnot(length(x) == length(coeffs))
     sum(x * coeffs) + const
@@ -41,13 +41,13 @@ get_test <- function(d, n, m, cran=TRUE) {
   }
 
   func <- get_linear(d)
-  
+
   points <- get_rect_points(d, n, corners=TRUE)
   values <- get_values(points, func)
-  
+
   xi <- get_rect_points(d, m)
   expected <- get_values(xi, func)
-  
+
   expect_equal(linear.interpolate(xi, points, values), expected, tolerance = 1e-7)
 }
 

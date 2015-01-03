@@ -73,7 +73,7 @@ linear.interpolate <- function(x, points, values, fill_value=NA, scale=FALSE, ci
   torus_enabled <- TRUE
   if (length(circular) == 1) {
     if (circular) {
-      circular <- rep(TRUE, d)      
+      circular <- rep(TRUE, d)
     } else {
       torus_enabled <- FALSE
     }

@@ -34,8 +34,8 @@ test_that("Initial", {
 })
 
 test_that("Simple 1", {
-  d <- 2  
-  
+  d <- 2
+
   points <- matrix(
     c(
       3, 0,
@@ -45,13 +45,13 @@ test_that("Simple 1", {
     ncol = d,
     byrow=TRUE
   )
-  
+
   values <- c(
     1,
     2,
     3
   )
-  
+
   xi <- matrix(
     c(
       .3, .2,
@@ -62,7 +62,7 @@ test_that("Simple 1", {
     ncol = d,
     byrow=TRUE
   )
-  
+
   expect_equal(linear.interpolate(xi, points, values), c(2.784615, 2.010256, 1.566667, 1.589744), tolerance = 1e-5)
 })
 
@@ -80,7 +80,7 @@ test_that("Simple 1", {
     byrow=TRUE
   )
 
-  values <- c( 
+  values <- c(
     .5,
     87,
     21
@@ -95,6 +95,6 @@ test_that("Simple 1", {
     ncol = d,
     byrow=TRUE
   )
-  
+
   expect_equal(linear.interpolate(xi, points, values), c(11.25914, 21.85374, 53.95628), tolerance = 1e-5)
 })
