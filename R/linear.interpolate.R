@@ -1,41 +1,3 @@
-make.toroidal <- function(points, values, circular) {
-  d <- ncol(points)
-
-  shifts <- sapply(
-    1:d,
-    function(x) {
-      if (circular[x]) {
-        max(points[, x]) - min(points[, x])
-      } else {
-        0
-      }
-    }
-  )
-  directions <- c(0, 1, -1)
-  all_shifts <- expand.grid(
-    lapply(
-      as.list(shifts),
-      function(shift) {
-        if (shift == 0) {
-          0
-        } else {
-          shift * directions
-        }
-      }
-    )
-  )
-
-  toroidal_points <- c()
-  for (i in 1:nrow(all_shifts)) {
-    shift <- unlist(all_shifts[i, ])
-    toroidal_points <- rbind(toroidal_points, sweep(points, d, shift))
-  }
-
-  toroidal_values <- rep(values, nrow(all_shifts))
-
-  list(points = toroidal_points, values = toroidal_values)
-}
-
 linear.interpolate <- function(x, points, values,
                                fill_value = NA_real_,
                                scale = FALSE, circular = FALSE) {
@@ -66,22 +28,23 @@ linear.interpolate <- function(x, points, values,
 
   stopifnot(length(scale) == d)
 
-  # TODO Allow to denote topology by period
-  # circular <- rep(circular, d)[seq_len(d)]
-  torus_enabled <- TRUE
-  if (length(circular) == 1) {
-    if (circular) {
-      circular <- rep(TRUE, d)
-    } else {
-      torus_enabled <- FALSE
-    }
+  circular <- rep(circular, d)[seq_len(d)]
+  if (is.logical(circular)) {
+    circular <- ifelse(circular,
+                       apply(points, 2, function(x) diff(range(x))),
+                       Inf)
   }
 
-  if (torus_enabled) {
-    stopifnot(length(circular) == d)
-    tor = make.toroidal(points, values, circular)
-    points <- tor$points
-    values <- tor$values
+  for (j in which(circular < Inf)) {
+    per <- circular[j]
+    x[, j] <- x[, j] %% per
+    points[, j] <- points[, j] %% per
+    points.p <- points.m <- points
+    points.p[, j] <- points.p[, j] + per
+    points.m[, j] <- points.m[, j] - per
+    points <- rbind(points.m, points, points.p)
+
+    values <- rep(values, 3)
   }
 
   x <- as.double(x)
