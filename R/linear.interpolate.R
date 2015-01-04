@@ -1,5 +1,4 @@
 linear.interpolate <- function(x, points, values,
-                               fill_value = NA_real_,
                                scale = FALSE, circular = FALSE) {
   x <- as.matrix(x)
   points <- as.matrix(points)
@@ -10,7 +9,6 @@ linear.interpolate <- function(x, points, values,
   values <- rep_len(values, nrow(points)) # TODO Add recycling warning
   scale <- rep_len(scale, d)
   circular <- rep_len(circular, d)
-  fill_value <- fill_value[[1]]
 
   stopifnot(all(is.finite(points)))
   stopifnot(all(is.finite(x))) # TODO Allow NAs in input values
@@ -46,12 +44,9 @@ linear.interpolate <- function(x, points, values,
   points <- as.double(t(points))
   values <- as.double(values)
   scale <- as.double(scale)
-  if (!is.na(fill_value) & !is.nan(fill_value)) {
-    fill_value <- as.double(fill_value)
-  }
 
-  storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- storage.mode(fill_value) <- "double"
+  storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- "double"
   storage.mode(d) <- "integer"
 
-  .Call("linear_interpolate_d", d, points, values, x, fill_value)
+  .Call("linear_interpolate_d", d, points, values, x)
 }

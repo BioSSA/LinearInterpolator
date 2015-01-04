@@ -27,6 +27,5 @@ extern "C"
                             SEXP points,        //vector<Point>
                             SEXP values,        //vector<double>
                             SEXP xi,            //vector<Point>
-                            SEXP fill_value,    //double
                             SEXP scale_coeffs); //vector<double>
 }

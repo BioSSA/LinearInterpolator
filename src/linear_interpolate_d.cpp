@@ -57,7 +57,6 @@ SEXP linear_interpolate_d(SEXP dimentions,
                           SEXP points,
                           SEXP values,
                           SEXP xi,
-                          SEXP fill_value,
                           SEXP scale_coeffs)
 {
   auto d = INTEGER(dimentions)[0];
@@ -73,7 +72,7 @@ SEXP linear_interpolate_d(SEXP dimentions,
     vertices_to_values[vertex_handle] = REAL(values)[i];
   }
 
-  auto double_fill_value = REAL(fill_value)[0];
+  const double double_fill_value = NA_REAL;
 
   auto recalc_point =
       [&]

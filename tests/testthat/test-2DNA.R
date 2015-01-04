@@ -99,5 +99,4 @@ test_that("Fill value", {
   )
 
   expect_equal(linear.interpolate(xi, points, values), c(NA, 2.47, NA, NA, NA), tolerance = 1e-5)
-  expect_equal(linear.interpolate(xi, points, values, fill_value=18.5), c(18.5, 2.47, 18.5, 18.5, 18.5), tolerance = 1e-5)
 })
