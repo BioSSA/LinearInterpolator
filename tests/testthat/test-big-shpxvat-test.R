@@ -7,6 +7,7 @@ test_that("Big test", {
   n <- 100000
   m <- 1000
 
+  set.seed(1)
   points <- matrix(
     runif(d * n, 0, 100),
     ncol = d,

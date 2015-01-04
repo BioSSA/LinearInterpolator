@@ -51,6 +51,7 @@ get_test <- function(d, n, m, cran=TRUE) {
   expect_equal(linear.interpolate(xi, points, values), expected, tolerance = 1e-7)
 }
 
+set.seed(1)
 test_that("Random 2D", get_test(2, 1000000, 1000000, cran=FALSE))
 test_that("Random 3D", get_test(3, 10000, 10000))
 test_that("Random 4D", get_test(4, 1000, 1000))
