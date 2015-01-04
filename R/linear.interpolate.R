@@ -13,16 +13,14 @@ linear.interpolate <- function(x, points, values,
   stopifnot(all(is.finite(points)))
   stopifnot(all(is.finite(x))) # TODO Allow NAs in input values
 
+  ranges <- apply(points, 2, function(x) diff(range(x)))
+
   if (is.logical(scale)) {
-    scale <- ifelse(scale,
-                    apply(points, 2, function(x) diff(range(x))),
-                    1)
+    scale <- ifelse(scale, ranges, 1)
   }
 
   if (is.logical(circular)) {
-    circular <- ifelse(circular,
-                       apply(points, 2, function(x) diff(range(x))),
-                       Inf)
+    circular <- ifelse(circular, ranges, Inf)
   }
 
   for (j in which(circular < Inf)) {
