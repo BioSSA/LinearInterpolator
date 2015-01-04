@@ -4,21 +4,16 @@ linear.interpolate <- function(x, points, values,
   x <- as.matrix(x)
   points <- as.matrix(points)
   values <- as.vector(values)
-  fill_value <- fill_value[[1]]
-
-  circular <- as.logical(circular)
 
   d <- ncol(points)
 
-  if (length(values) < nrow(points)) {
-    values <- values + numeric(nrow(points))
-  }
+  values <- rep_len(values, nrow(points)) # TODO Add recycling warning
+  scale <- rep_len(scale, d)
+  circular <- rep_len(circular, d)
+  fill_value <- fill_value[[1]]
 
-  stopifnot(length(values) == nrow(points))
   stopifnot(all(is.finite(points)))
   stopifnot(all(is.finite(x))) # TODO Allow NAs in input values
-
-  scale <- rep(scale, d)[seq_len(d)]
 
   if (is.logical(scale)) {
     scale <- ifelse(scale,
@@ -26,9 +21,6 @@ linear.interpolate <- function(x, points, values,
                     1)
   }
 
-  stopifnot(length(scale) == d)
-
-  circular <- rep(circular, d)[seq_len(d)]
   if (is.logical(circular)) {
     circular <- ifelse(circular,
                        apply(points, 2, function(x) diff(range(x))),
