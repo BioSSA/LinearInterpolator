@@ -11,7 +11,7 @@ linear.interpolate <- function(x, points, values,
   circular <- rep_len(circular, d)
 
   stopifnot(all(is.finite(points)))
-  stopifnot(all(is.finite(x))) # TODO Allow NAs in input values
+  stopifnot(all(is.finite(x)))
 
   ranges <- apply(points, 2, function(x) diff(range(x)))
 
