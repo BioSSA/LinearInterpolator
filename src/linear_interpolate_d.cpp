@@ -10,8 +10,6 @@
 #include <tuple>
 #include <vector>
 
-#include "sexp_scaled_point_iterator.hpp"
-
 
 std::vector<double> find_barycentric_coords(std::size_t size,
                                             Point const & point,
@@ -70,11 +68,7 @@ SEXP linear_interpolate_d(SEXP dimentions,
   int points_count = length(values);
   for (auto i = 0; i < points_count; ++i)
   {
-    Point point(
-        d,
-        sexp_scaled_point_iterator(points, points_count, i, scale_coeffs),
-        sexp_scaled_point_iterator(points, points_count, i + d * points_count, scale_coeffs));
-
+    Point point(d, REAL(points) + i*d, REAL(points) + (i + 1)*d);
     auto vertex_handle = triangulation.insert(point);
     vertices_to_values[vertex_handle] = REAL(values)[i];
   }
@@ -111,10 +105,7 @@ SEXP linear_interpolate_d(SEXP dimentions,
   SEXP results = PROTECT(allocVector(REALSXP, result_length));
   for(int i = 0; i < result_length; ++i)
   {
-    Point point(
-        d,
-        sexp_scaled_point_iterator(xi, result_length, i, scale_coeffs),
-        sexp_scaled_point_iterator(xi, result_length, i + result_length * d, scale_coeffs));
+    Point point(d, REAL(xi) + i*d, REAL(xi) + (i + 1)*d);
     REAL(results)[i] = recalc_point(point);
   }
   UNPROTECT(1);
