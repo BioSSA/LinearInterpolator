@@ -38,6 +38,13 @@ linear.interpolate <- function(x, points, values,
   x <- scale(x, center = FALSE, scale = scale)
   points <- scale(points, center = FALSE, scale = scale)
 
+  shrink <- function(x, center = colMeans(x), lambda = 0.9999) {
+    x <- as.matrix(x)
+    (x - rep(center, each = nrow(x))) * lambda + rep(center, each = nrow(x))
+  }
+
+  x <- shrink(x, center = colMeans(points))
+
   x <- as.double(t(x))
   points <- as.double(t(points))
   values <- as.double(values)
