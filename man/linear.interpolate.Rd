@@ -37,6 +37,7 @@ values <- c(1,  1,  1,  4)
 
 xi <- c(1., .7,
         .1, 1.8 )
+dim(xi) <- c(length(xi) / d, d)
                                # dots are: (1., ,1), (.7, 1.8)
 
 linear.interpolate(xi, points, values)
