@@ -26,6 +26,5 @@ extern "C"
   SEXP linear_interpolate_d(SEXP dimentions,    //unsigned
                             SEXP points,        //vector<Point>
                             SEXP values,        //vector<double>
-                            SEXP xi,            //vector<Point>
-                            SEXP scale_coeffs); //vector<double>
+                            SEXP xi);           //vector<Point>
 }

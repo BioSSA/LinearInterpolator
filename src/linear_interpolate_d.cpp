@@ -56,8 +56,7 @@ std::vector<double> find_barycentric_coords(std::size_t size,
 SEXP linear_interpolate_d(SEXP dimentions,
                           SEXP points,
                           SEXP values,
-                          SEXP xi,
-                          SEXP scale_coeffs)
+                          SEXP xi)
 {
   auto d = INTEGER(dimentions)[0];
 
