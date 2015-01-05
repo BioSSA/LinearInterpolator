@@ -57,7 +57,8 @@ public:
   LinearInterpolator_d(int d,
                        const double *points,
                        const double *values,
-                       size_t npoints) : d{d}, triangulation{d}, npoints{npoints} {
+                       size_t npoints) : d{d}, triangulation{d}, npoints{npoints},
+                                         infinite_simplex{Delaunay::Simplex_handle()} {
     for (size_t i{0}; i < npoints; ++i) {
       Point point(d, points + i*d, points + (i + 1)*d);
       Vertex_handle vertex_handle = triangulation.insert(point);
@@ -70,7 +71,7 @@ public:
 
     Point point(d, x, x + d);
     auto simplex = triangulation.locate(point);
-    if (simplex == Delaunay::Simplex_handle()) {
+    if (simplex == infinite_simplex) {
       return double_fill_value;
     }
     std::vector<Point>  vertices(d + 1);
@@ -93,6 +94,7 @@ private:
   size_t npoints;
   Delaunay triangulation;
   std::map<Vertex_handle, double> vertices_to_values;
+  const Delaunay::Simplex_handle infinite_simplex;
 };
 
 SEXP linear_interpolate_d(SEXP dimentions,
