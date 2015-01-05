@@ -52,44 +52,33 @@ std::vector<double> find_barycentric_coords(std::size_t size,
   return b;
 }
 
-//vector<double>
-SEXP linear_interpolate_d(SEXP dimentions,
-                          SEXP points,
-                          SEXP values,
-                          SEXP xi)
-{
-  auto d = INTEGER(dimentions)[0];
-
-  Delaunay triangulation(d);
-
-  std::map<Vertex_handle, double> vertices_to_values;
-  int points_count = length(values);
-  for (auto i = 0; i < points_count; ++i)
-  {
-    Point point(d, REAL(points) + i*d, REAL(points) + (i + 1)*d);
-    auto vertex_handle = triangulation.insert(point);
-    vertices_to_values[vertex_handle] = REAL(values)[i];
+class LinearInterpolator_d {
+public:
+  LinearInterpolator_d(int d,
+                       const double *points,
+                       const double *values,
+                       size_t npoints) : d{d}, triangulation{d}, npoints{npoints} {
+    for (size_t i{0}; i < npoints; ++i) {
+      Point point(d, points + i*d, points + (i + 1)*d);
+      Vertex_handle vertex_handle = triangulation.insert(point);
+      vertices_to_values[vertex_handle] = values[i];
+    }
   }
 
-  const double double_fill_value = NA_REAL;
+  double operator()(const double *x) {
+    const double double_fill_value = NA_REAL;
 
-  auto recalc_point =
-      [&]
-      (Point const & point)
-  {
+    Point point(d, x, x + d);
     auto simplex = triangulation.locate(point);
-    if (simplex == Delaunay::Simplex_handle())
-    {
+    if (simplex == Delaunay::Simplex_handle()) {
       return double_fill_value;
     }
     std::vector<Point>  vertices(d + 1);
     std::vector<double> vertex_values(d + 1);
-    for (auto i = 0; i <= triangulation.current_dimension(); ++i)
-    {
+    for (size_t i{0}; i <= triangulation.current_dimension(); ++i) {
       auto vertex = triangulation.vertex_of_simplex(simplex, i);
       double vertex_val = vertices_to_values[vertex];
-      if (ISNAN(vertex_val))
-      {
+      if (ISNAN(vertex_val)) {
         return double_fill_value;
       }
       vertices[i] = triangulation.associated_point(vertex);
@@ -97,15 +86,30 @@ SEXP linear_interpolate_d(SEXP dimentions,
     }
     auto barycentric = find_barycentric_coords(triangulation.current_dimension(), point, vertices);
     return std::inner_product(vertex_values.begin(), vertex_values.end(), barycentric.begin(), 0.);
-  };
-
-  auto result_length = length(xi) / d;
-  SEXP results = PROTECT(allocVector(REALSXP, result_length));
-  for(int i = 0; i < result_length; ++i)
-  {
-    Point point(d, REAL(xi) + i*d, REAL(xi) + (i + 1)*d);
-    REAL(results)[i] = recalc_point(point);
   }
+
+private:
+  const int d;
+  size_t npoints;
+  Delaunay triangulation;
+  std::map<Vertex_handle, double> vertices_to_values;
+};
+
+SEXP linear_interpolate_d(SEXP dimentions,
+                          SEXP points,
+                          SEXP values,
+                          SEXP xi) {
+  int d = INTEGER(dimentions)[0];
+
+  LinearInterpolator_d li(d, REAL(points), REAL(values), length(values));
+
+  int result_length = length(xi) / d;
+  SEXP results = PROTECT(allocVector(REALSXP, result_length));
+
+  for (size_t i{0}; i < result_length; ++i) {
+    REAL(results)[i] = li(REAL(xi) + i*d);
+  }
+
   UNPROTECT(1);
   return results;
 }
