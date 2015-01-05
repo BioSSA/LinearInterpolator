@@ -106,10 +106,8 @@ public:
     }
 
 
-    const auto infinite_simplex = Delaunay::Simplex_handle();
-    auto cc = 0;
     for (const auto &simplex : triangulation.all_simplices()) {
-      if (simplex == infinite_simplex) continue;
+      if (simplex == Delaunay::Simplex_handle()) continue;
 
       std::vector<Point>  vertices;
       std::vector<double> vertex_values;
@@ -117,7 +115,6 @@ public:
       for (size_t i{0}; i <= d; ++i) {
         auto vertex = triangulation.vertex_of_simplex(simplex, i);
         double vertex_val = vertices_to_values[vertex];
-        
         if (vertex == Delaunay::Vertex_handle()) {
           flag = false;
           break;
@@ -127,8 +124,6 @@ public:
       }
       if (!flag) continue;
       m[simplex] = linear_coef(d, vertices, vertex_values);
-
-      
     }
   }
 
