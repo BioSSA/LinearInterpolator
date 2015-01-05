@@ -59,15 +59,13 @@ std::vector<double> linear_coef(size_t d,
   std::vector<double> a((d+1) * (d+1));
   for (size_t i = 0; i <= d; ++i) {
     for (size_t j = 0; j < d; ++j) {
-      a[i + j*(d+1)] = *(points[j].cartesian_begin() + 0);
+      a[i + j*(d+1)] = *(points[i].cartesian_begin() + j);
     }
 
     a[i + d*(d+1)] = 1;
   }
 
   std::vector<double> b(values);
-
-  return b;
 
   for (auto el : b) {
     if (ISNAN(el)) {
@@ -88,7 +86,7 @@ std::vector<double> linear_coef(size_t d,
 
   if (info != 0)
   {
-    error("Bad matrix");
+    // error("Bad matrix");
   }
 
   return b;
@@ -109,24 +107,42 @@ public:
 
 
     const auto infinite_simplex = Delaunay::Simplex_handle();
-    std::map<Delaunay::Simplex_handle, std::vector<double>> m;
     auto cc = 0;
     for (const auto &simplex : triangulation.all_simplices()) {
       if (simplex == infinite_simplex) continue;
 
-      std::vector<Point>  vertices(d + 1);
-      std::vector<double> vertex_values(d + 1);
+      std::vector<Point>  vertices;
+      std::vector<double> vertex_values;
+      bool flag = true;
       for (size_t i{0}; i <= d; ++i) {
         auto vertex = triangulation.vertex_of_simplex(simplex, i);
         double vertex_val = vertices_to_values[vertex];
-        vertices[i] = triangulation.associated_point(vertex);
-        vertex_values[i] = vertex_val;
+        
+        if (vertex == Delaunay::Vertex_handle()) {
+          flag = false;
+          break;
+        }
+        vertices.push_back(vertex->point());
+        vertex_values.push_back(vertex_val);
       }
-      printf("Simplex %d\n", cc); ++cc;
+      if (!flag) continue;
       m[simplex] = linear_coef(d, vertices, vertex_values);
 
       
     }
+  }
+
+  double get(const double *x) {
+    const double double_fill_value = NA_REAL;
+
+    Point point(d, x, x + d);
+    auto simplex = triangulation.locate(point);
+    if (!m.count(simplex)) {
+      return double_fill_value;
+    }
+
+    auto beta = m[simplex];
+    return std::inner_product(x, x + d, beta.begin(), beta[d]);
   }
 
   double operator()(const double *x) {
@@ -157,6 +173,7 @@ private:
   size_t npoints;
   Delaunay triangulation;
   std::map<Vertex_handle, double> vertices_to_values;
+  std::map<Delaunay::Simplex_handle, std::vector<double>> m;
 };
 
 SEXP linear_interpolate_d(SEXP dimentions,
@@ -171,7 +188,8 @@ SEXP linear_interpolate_d(SEXP dimentions,
   SEXP results = PROTECT(allocVector(REALSXP, result_length));
 
   for (size_t i{0}; i < result_length; ++i) {
-    REAL(results)[i] = li(REAL(xi) + i*d);
+    // REAL(results)[i] = li(REAL(xi) + i*d);
+    REAL(results)[i] = li.get(REAL(xi) + i*d);
   }
 
   UNPROTECT(1);
