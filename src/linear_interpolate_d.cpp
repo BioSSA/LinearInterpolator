@@ -1,13 +1,7 @@
 #include "linear_interpolate_d.hpp"
 
-#include <cmath>
-
 #include <algorithm>
 #include <map>
-#include <numeric>
-#include <limits>
-#include <string>
-#include <tuple>
 #include <vector>
 
 typedef CGAL::Cartesian_d<double> R;
