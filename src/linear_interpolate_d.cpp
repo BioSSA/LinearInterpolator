@@ -11,7 +11,7 @@
 #include <vector>
 
 
-std::vector<double> find_barycentric_coords(std::size_t size,
+static std::vector<double> find_barycentric_coords(std::size_t size,
                                             Point const & point,
                                             std::vector<Point> const & simplex)
 {
