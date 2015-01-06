@@ -1,3 +1,4 @@
 useDynLib(LinearInterpolator, linear_interpolate_d)
+useDynLib(LinearInterpolator, linear_interpolate_3)
 
 export(linear.interpolate)
