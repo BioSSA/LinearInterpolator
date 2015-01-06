@@ -24,7 +24,7 @@ public:
     }
   }
 
-  double operator()(const double *x) {
+  double linearInterpolation(const double *x) {
     const double double_fill_value = NA_REAL;
 
     Point point(d, x, x + d);
@@ -66,7 +66,7 @@ SEXP linear_interpolate_d(SEXP dimentions,
   SEXP results = PROTECT(allocVector(REALSXP, result_length));
 
   for (size_t i{0}; i < result_length; ++i) {
-    REAL(results)[i] = li(REAL(xi) + i*d);
+    REAL(results)[i] = li.linearInterpolation(REAL(xi) + i*d);
   }
 
   UNPROTECT(1);
