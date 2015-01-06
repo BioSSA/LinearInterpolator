@@ -15,11 +15,6 @@
 #include <R_ext/BLAS.h>
 #include <R_ext/Lapack.h>
 
-typedef CGAL::Cartesian_d<double> R;
-typedef CGAL::Delaunay_d<R>       Delaunay;
-typedef Delaunay::Point_d         Point;
-typedef Delaunay::Vertex_handle   Vertex_handle;
-
 extern "C"
 {
   //vector<double>

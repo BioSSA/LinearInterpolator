@@ -10,6 +10,11 @@
 #include <tuple>
 #include <vector>
 
+typedef CGAL::Cartesian_d<double> R;
+typedef CGAL::Delaunay_d<R>       Delaunay;
+typedef Delaunay::Point_d         Point;
+typedef Delaunay::Vertex_handle   Vertex_handle;
+
 
 static std::vector<double> find_barycentric_coords(std::size_t size,
                                             Point const & point,
