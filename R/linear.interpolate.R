@@ -53,5 +53,10 @@ linear.interpolate <- function(x, points, values,
   storage.mode(x) <- storage.mode(points) <- storage.mode(values) <- "double"
   storage.mode(d) <- "integer"
 
-  .Call("linear_interpolate_d", d, points, values, x)
+  if (d == 3)
+    .Call("linear_interpolate_3", points, values, x)
+  else if (d == 1)
+    .Call("linear_interpolate_1", points, values, x)
+  else
+    .Call("linear_interpolate_d", d, points, values, x)
 }

@@ -1,56 +1,15 @@
 #include "linear_interpolate_d.hpp"
-
-#include <cmath>
+#include "find_barycentric_coords.hpp"
 
 #include <algorithm>
 #include <map>
-#include <numeric>
-#include <limits>
-#include <string>
-#include <tuple>
 #include <vector>
 
+typedef CGAL::Cartesian_d<double> R;
+typedef CGAL::Delaunay_d<R>       Delaunay;
+typedef Delaunay::Point_d         Point;
+typedef Delaunay::Vertex_handle   Vertex_handle;
 
-std::vector<double> find_barycentric_coords(std::size_t size,
-                                            Point const & point,
-                                            std::vector<Point> const & simplex)
-{
-  std::vector<double> a(size * size);
-  for (size_t i = 0; i < size; ++i)
-  {
-    for (size_t j = 0; j < size; ++j)
-    {
-      a[i*size+j] = *(simplex[i].cartesian_begin()+j) - *(simplex[size].cartesian_begin()+j);
-    }
-  }
-
-  std::vector<double> b(size + 1);
-  for (size_t i = 0; i < size; ++i)
-  {
-    b[i] = *(point.cartesian_begin()+i) - *(simplex[size].cartesian_begin()+i);
-  }
-
-  // additional variables needed for LAPACK
-  std::vector<int> ipiv(size);
-  int info;
-  int size_int = size;
-  int b_size = 1;
-
-  // solve a*x = b
-  // result will be in b
-  F77_NAME(dgesv)(&size_int, &b_size, &a[0], &size_int, &ipiv[0],
-    &b[0], &size_int, &info);
-
-  if (info != 0)
-  {
-    error("Bad matrix");
-  }
-
-  // calculate last coordinate
-  b[size] = 1 - std::accumulate(b.begin(), b.end() - 1, 0.);
-
-  return b;
-}
 
 class LinearInterpolator_d {
 public:
@@ -66,7 +25,7 @@ public:
     }
   }
 
-  double operator()(const double *x) {
+  double linearInterpolation(const double *x) {
     const double double_fill_value = NA_REAL;
 
     Point point(d, x, x + d);
@@ -109,7 +68,7 @@ SEXP linear_interpolate_d(SEXP dimentions,
   SEXP results = PROTECT(allocVector(REALSXP, result_length));
 
   for (size_t i{0}; i < result_length; ++i) {
-    REAL(results)[i] = li(REAL(xi) + i*d);
+    REAL(results)[i] = li.linearInterpolation(REAL(xi) + i*d);
   }
 
   UNPROTECT(1);
